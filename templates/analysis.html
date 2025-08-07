@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investment Analysis Tool - AI Real Estate Advisor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+            color: #2c3e50;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        /* Header */
+        .header {
+            background: #ffffff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: 700;
+            color: #2c3e50;
+            text-decoration: none;
+        }
+        
+        .logo .icon {
+            font-size: 28px;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+            align-items: center;
+        }
+        
+        .nav-menu a {
+            color: #6c757d;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-menu a:hover {
+            color: #007bff;
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .auth-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .dashboard-btn {
+            background: #007bff;
+            color: white;
+        }
+        
+        .dashboard-btn:hover {
+            background: #0056b3;
+            transform: translateY(-1px);
+        }
+        
+        .logout-btn {
+            background: transparent;
+            color: #dc3545;
+            border: 1px solid #dc3545;
+        }
+        
+        .logout-btn:hover {
+            background: #dc3545;
+            color: white;
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-top: 70px;
+            padding: 40px 0;
+            min-height: calc(100vh - 70px);
+        }
+        
+        .tool-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+        
+        .tool-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .tool-header h1 {
+            font-size: 42px;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            font-weight: 700;
+        }
+        
+        .tool-header p {
+            font-size: 18px;
+            color: #6c757d;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .content-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+        
+        .form-section {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e9ecef;
+        }
+        
+        .results-section {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e9ecef;
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 0.95rem;
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #e8f4f8;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.8);
+            color: #2c3e50;
+        }
+        
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #4a90e2;
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+            background: white;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #4a90e2 0%, #7bb3f0 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(74, 144, 226, 0.3);
+        }
+        
+        .submit-btn:disabled {
+            background: #b0c4de;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+        
+        .spinner {
+            border: 4px solid #e8f4f8;
+            border-top: 4px solid #4a90e2;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .results {
+            display: none;
+        }
+        
+        .result-card {
+            background: linear-gradient(135deg, #e8f5e8 0%, #f0f8ff 100%);
+            color: #2c3e50;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            border: 1px solid rgba(144, 238, 144, 0.3);
+        }
+        
+        .result-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .result-card .value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: #27ae60;
+        }
+        
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .property-card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid #4a90e2;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .property-card h4 {
+            color: #2c3e50;
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+        }
+        
+        .property-info {
+            font-size: 0.9rem;
+            color: #5a6c7d;
+            line-height: 1.6;
+        }
+        
+        .error {
+            background: #ffe6e6;
+            color: #c62828;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            display: none;
+            border: 1px solid #ffcdd2;
+        }
+
+        /* Property Modal Styles */
+        .property-modal {
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 2% auto;
+            padding: 0;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 1000px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px 30px;
+            border-radius: 20px 20px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .close-modal {
+            font-size: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        .close-modal:hover {
+            opacity: 1;
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .property-detail-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .property-detail-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .property-id {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .property-type {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .detail-item {
+            background: #f8f9fa;
+            padding: 18px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .detail-label {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .detail-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .financial-section {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+
+        .financial-section h3 {
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .financial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .financial-item {
+            text-align: center;
+        }
+
+        .financial-item .label {
+            font-size: 12px;
+            opacity: 0.9;
+            margin-bottom: 4px;
+        }
+
+        .financial-item .value {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .investment-analysis {
+            background: #e8f5e8;
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid #4caf50;
+            margin-bottom: 20px;
+        }
+
+        .investment-analysis h3 {
+            color: #2e7d32;
+            margin-bottom: 12px;
+        }
+
+        .analysis-points {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .analysis-points li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+            color: #2e7d32;
+            font-size: 14px;
+        }
+
+        .analysis-points li:before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #4caf50;
+            font-weight: bold;
+        }
+
+        .location-info {
+            background: #fff3e0;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 2px solid #ff9800;
+        }
+
+        .location-info h3 {
+            color: #e65100;
+            margin-bottom: 12px;
+        }
+
+        .risk-indicator {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .risk-low {
+            background: #e8f5e8;
+            color: #2e7d32;
+        }
+
+        .risk-medium {
+            background: #fff3e0;
+            color: #e65100;
+        }
+
+        .risk-high {
+            background: #ffebee;
+            color: #c62828;
+        }
+        
+        @media (max-width: 1024px) {
+            .content-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            .tool-header h1 {
+                font-size: 36px;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                padding: 0 20px;
+            }
+            
+            .nav-menu {
+                display: none;
+            }
+            
+            .tool-header h1 {
+                font-size: 32px;
+            }
+            
+            .tool-header p {
+                font-size: 16px;
+            }
+            
+            .content-container {
+                padding: 0 20px;
+            }
+            
+            .form-section, .results-section {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="/" class="logo">
+                <span class="icon">🏠</span>
+                <span>AI Real Estate Advisor</span>
+            </a>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="/dashboard">Dashboard</a></li>
+                    <li><a href="/analysis">Analysis Tool</a></li>
+                </ul>
+            </nav>
+            <div class="auth-buttons">
+                <a href="/dashboard" class="auth-btn dashboard-btn">Dashboard</a>
+                <a href="/logout" class="auth-btn logout-btn">Logout</a>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="tool-content">
+            <div class="tool-header">
+                <h1>PPO Investment Analysis Tool</h1>
+                <p>Get personalized real estate investment recommendations using Deep Reinforcement Learning (PPO Algorithm) based on Markov Decision Process modeling</p>
+            </div>
+            
+            <div class="content-container">
+                <div class="form-section">
+                    <h2 class="section-title">🤖 PPO-DRL Investment Analysis</h2>
+                    <form id="investmentForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="age">Age:</label>
+                                <input type="number" id="age" name="age" min="18" max="80" value="30" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="start_year">Investment Start Year:</label>
+                                <input type="number" id="start_year" name="start_year" min="2020" max="2030" value="2024" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="marriage">Marital Status:</label>
+                                <select id="marriage" name="marriage" required>
+                                    <option value="0">Single</option>
+                                    <option value="1">Married</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="children">Number of Children:</label>
+                                <input type="number" id="children" name="children" min="0" max="5" value="0" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="income">Annual Income (€):</label>
+                            <input type="number" id="income" name="income" min="30000" max="300000" value="80000" step="1000" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="initial_cash">Initial Capital (€):</label>
+                            <input type="number" id="initial_cash" name="initial_cash" min="50000" max="1000000" value="200000" step="5000" required>
+                        </div>
+                        
+                        <button type="submit" class="submit-btn" id="submitBtn">
+                            Run PPO Algorithm Analysis
+                        </button>
+                    </form>
+                </div>
+                
+                <div class="results-section">
+                    <h2 class="section-title">📈 PPO Algorithm Results</h2>
+                    
+                    <div class="loading" id="loading">
+                        <div class="spinner"></div>
+                        <p>PPO algorithm is analyzing your investment portfolio using MDP modeling, please wait...</p>
+                    </div>
+                    
+                    <div class="error" id="error"></div>
+                    
+                    <div class="results" id="results">
+                        <div class="result-card">
+                            <h3>💰 Final Total Assets</h3>
+                            <div class="value" id="finalAssets">€0</div>
+                            <small>Total asset value at the end of 10-year investment period</small>
+                        </div>
+                        
+                        <div class="result-card">
+                            <h3>📈 Investment Return</h3>
+                            <div class="value" id="totalReturn">0%</div>
+                            <small>Total return relative to initial investment</small>
+                        </div>
+                        
+                        <div class="result-card">
+                            <h3>🏘️ PPO Selected Properties</h3>
+                            <div class="value" id="portfolioSize">0</div>
+                            <small>PPO algorithm optimal portfolio size (typically 1-10 properties)</small>
+                        </div>
+                        
+                        <h3 style="margin-top: 30px; margin-bottom: 15px; color: #2c3e50;">🏠 PPO Algorithm Investment Portfolio</h3>
+                        <div class="portfolio-grid" id="portfolioGrid"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Property Detail Modal -->
+    <div id="propertyModal" class="property-modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>房产详情</h2>
+                <span class="close-modal" onclick="closePropertyModal()">&times;</span>
+            </div>
+            <div class="modal-body" id="propertyDetailContent">
+                <!-- Property details will be loaded here -->
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('investmentForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const loading = document.getElementById('loading');
+            const results = document.getElementById('results');
+            const error = document.getElementById('error');
+            
+            // Reset state
+            loading.style.display = 'block';
+            results.style.display = 'none';
+            error.style.display = 'none';
+            submitBtn.disabled = true;
+            
+            // Collect form data
+            const formData = {
+                age: parseInt(document.getElementById('age').value),
+                start_year: parseInt(document.getElementById('start_year').value),
+                marriage: parseInt(document.getElementById('marriage').value),
+                children: parseInt(document.getElementById('children').value),
+                income: parseInt(document.getElementById('income').value),
+                initial_cash: parseInt(document.getElementById('initial_cash').value)
+            };
+            
+            try {
+                const response = await fetch('/simulate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                const data = await response.json();
+                
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+                
+                // Display results
+                document.getElementById('finalAssets').textContent = 
+                    '€' + Math.round(data.final_total_assets).toLocaleString();
+                document.getElementById('totalReturn').textContent = 
+                    Math.round(data.total_return * 10) / 10 + '%';
+                document.getElementById('portfolioSize').textContent = 
+                    data.final_portfolio.length;
+                
+                // Display portfolio
+                const portfolioGrid = document.getElementById('portfolioGrid');
+                portfolioGrid.innerHTML = '';
+                
+                if (data.final_portfolio && data.final_portfolio.length > 0) {
+                    data.final_portfolio.forEach((property, index) => {
+                        // Handle NaN values and ensure valid numbers
+                        const purchasePrice = isNaN(property.purchase_price) ? 0 : property.purchase_price;
+                        const marketPrice = isNaN(property.market_price) ? 0 : property.market_price;
+                        const monthlyRent = isNaN(property.monthly_rent) ? 0 : property.monthly_rent;
+                        const yield_ = (purchasePrice > 0 && monthlyRent > 0) ? 
+                            ((monthlyRent * 12 / purchasePrice) * 100).toFixed(1) : 'N/A';
+                        
+                        const propertyCard = document.createElement('div');
+                        propertyCard.className = 'property-card';
+                        propertyCard.style.cursor = 'pointer';
+                        propertyCard.innerHTML = `
+                            <h4>Property #${property.house_id || 'Unknown'}</h4>
+                            <div class="property-info">
+                                <div><strong>Purchase Price:</strong> €${Math.round(purchasePrice).toLocaleString()}</div>
+                                <div><strong>Current Value:</strong> €${Math.round(marketPrice).toLocaleString()}</div>
+                                <div><strong>Monthly Rent:</strong> €${Math.round(monthlyRent).toLocaleString()}</div>
+                                <div><strong>Postal Code:</strong> ${property.plz || 'N/A'}</div>
+                                <div><strong>Yield:</strong> ${yield_}${yield_ !== 'N/A' ? '%' : ''}</div>
+                                <div style="margin-top: 10px; color: #4a90e2; font-weight: 600;">Click for Details →</div>
+                            </div>
+                        `;
+                        propertyCard.addEventListener('click', () => {
+                            showPropertyDetail(property);
+                        });
+                        portfolioGrid.appendChild(propertyCard);
+                    });
+                } else {
+                    portfolioGrid.innerHTML = '<p style="text-align: center; color: #5a6c7d;">PPO algorithm recommends not investing in real estate at this time. Continue accumulating capital.</p>';
+                }
+                
+                loading.style.display = 'none';
+                results.style.display = 'block';
+                
+            } catch (err) {
+                loading.style.display = 'none';
+                error.style.display = 'block';
+                error.textContent = 'Error during analysis: ' + err.message;
+            } finally {
+                submitBtn.disabled = false;
+            }
+        });
+        
+        // Real-time update of initial capital suggestion
+        document.getElementById('income').addEventListener('input', function() {
+            const income = parseInt(this.value) || 0;
+            const suggestedCash = Math.round(income * 2.5);
+            const cashInput = document.getElementById('initial_cash');
+            if (cashInput.value == cashInput.defaultValue || !cashInput.value) {
+                cashInput.value = suggestedCash;
+            }
+        });
+
+        // Property detail modal functions
+        function showPropertyDetail(property) {
+            const modal = document.getElementById('propertyModal');
+            const content = document.getElementById('propertyDetailContent');
+            
+            // Handle NaN values and calculate additional financial metrics
+            const purchasePrice = isNaN(property.purchase_price) ? 0 : property.purchase_price;
+            const marketPrice = isNaN(property.market_price) ? 0 : property.market_price;
+            const monthlyRent = isNaN(property.monthly_rent) ? 0 : property.monthly_rent;
+            const area = isNaN(property.area) ? 0 : property.area;
+            const yearBuilt = isNaN(property.year_built) ? null : property.year_built;
+            
+            const annualRent = monthlyRent * 12;
+            const rentalYield = (purchasePrice > 0 && annualRent > 0) ? (annualRent / purchasePrice) * 100 : 0;
+            const paybackPeriod = (annualRent > 0) ? purchasePrice / annualRent : 0;
+            const pricePerSqm = (area > 0) ? purchasePrice / area : null;
+            
+            // Determine risk level
+            let riskLevel = 'medium';
+            let riskText = 'Medium Risk';
+            if (rentalYield > 6) {
+                riskLevel = 'low';
+                riskText = 'Low Risk';
+            } else if (rentalYield < 3) {
+                riskLevel = 'high';
+                riskText = 'High Risk';
+            }
+            
+            // Determine property type
+            let propertyTypeText = '🏘️ Property';
+            if (property.house_type === 0) {
+                propertyTypeText = '🏢 Apartment';
+            } else if (property.house_type === 1) {
+                propertyTypeText = '🏠 House';
+            }
+            
+            content.innerHTML = `
+                <div class="property-detail-card">
+                    <div class="property-detail-header">
+                        <div class="property-id">Property #${property.house_id}</div>
+                        <div class="property-type">${propertyTypeText}</div>
+                    </div>
+                    
+                    <div style="padding: 25px;">
+                        <div class="location-info">
+                            <h3>📍 Location Information</h3>
+                            <p><strong>Postal Code:</strong> ${property.plz || 'Unknown'}</p>
+                            <p><strong>Region:</strong> ${property.region || 'Unknown'}</p>
+                        </div>
+                        
+                        <div class="details-grid">
+                            <div class="detail-item">
+                                <div class="detail-label">Purchase Price</div>
+                                <div class="detail-value">€${Math.round(purchasePrice).toLocaleString()}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Current Market Value</div>
+                                <div class="detail-value">€${Math.round(marketPrice).toLocaleString()}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Monthly Rent</div>
+                                <div class="detail-value">€${Math.round(monthlyRent).toLocaleString()}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Rental Yield</div>
+                                <div class="detail-value">${rentalYield > 0 ? rentalYield.toFixed(2) + '%' : 'N/A'}</div>
+                            </div>
+                            ${area > 0 ? `
+                            <div class="detail-item">
+                                <div class="detail-label">Property Area</div>
+                                <div class="detail-value">${area} m²</div>
+                            </div>
+                            ` : ''}
+                            ${yearBuilt ? `
+                            <div class="detail-item">
+                                <div class="detail-label">Year Built</div>
+                                <div class="detail-value">${yearBuilt}</div>
+                            </div>
+                            ` : ''}
+                            <div class="detail-item">
+                                <div class="detail-label">Investment Risk</div>
+                                <div class="detail-value">
+                                    <span class="risk-indicator risk-${riskLevel}">${riskText}</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="financial-section">
+                            <h3>💰 Financial Analysis</h3>
+                            <div class="financial-grid">
+                                <div class="financial-item">
+                                    <div class="label">Annual Rental Income</div>
+                                    <div class="value">€${Math.round(annualRent).toLocaleString()}</div>
+                                </div>
+                                <div class="financial-item">
+                                    <div class="label">Payback Period</div>
+                                    <div class="value">${paybackPeriod > 0 ? paybackPeriod.toFixed(1) + ' years' : 'N/A'}</div>
+                                </div>
+                                <div class="financial-item">
+                                    <div class="label">Value Appreciation</div>
+                                    <div class="value">€${Math.round(marketPrice - purchasePrice).toLocaleString()}</div>
+                                </div>
+                                ${pricePerSqm ? `
+                                <div class="financial-item">
+                                    <div class="label">Price per Sqm</div>
+                                    <div class="value">€${Math.round(pricePerSqm).toLocaleString()}</div>
+                                </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                        
+                        <div class="investment-analysis">
+                            <h3>📊 Investment Analysis</h3>
+                            <ul class="analysis-points">
+                                ${rentalYield > 5 ? '<li>High rental yield with good cash flow performance</li>' : ''}
+                                ${property.house_type === 0 ? '<li>Apartment type with relatively low maintenance costs</li><li>Suitable for first-time investors or those seeking stable returns</li>' : ''}
+                                ${property.house_type === 1 ? '<li>Detached house with significant appreciation potential</li><li>Suitable for long-term investment strategies</li>' : ''}
+                                ${yearBuilt && yearBuilt > 2000 ? '<li>Relatively new property with expected lower repair costs</li>' : ''}
+                                <li>Located in ${property.plz || 'this'} area with certain geographical advantages</li>
+                                <li>Recommend making decisions based on personal financial situation and investment goals</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            modal.style.display = 'block';
+        }
+        
+        function closePropertyModal() {
+            const modal = document.getElementById('propertyModal');
+            modal.style.display = 'none';
+        }
+        
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('propertyModal');
+            if (event.target === modal) {
+                closePropertyModal();
+            }
+        }
+    </script>
+</body>
+</html>

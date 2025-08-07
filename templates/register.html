@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - AI Real Estate Investment Advisor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            z-index: 1000;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 24px;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 30px;
+        }
+
+        .header-nav a {
+            color: #6c757d;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .header-nav a:hover {
+            color: #007bff;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            margin-top: 70px;
+        }
+
+        /* Left Side - Info Section */
+        .info-section {
+            flex: 1;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px;
+            color: white;
+            text-align: center;
+        }
+
+        .info-content h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .info-content p {
+            font-size: 20px;
+            margin-bottom: 40px;
+            opacity: 0.9;
+            max-width: 500px;
+            line-height: 1.6;
+        }
+
+        .benefits-list {
+            max-width: 600px;
+            text-align: left;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .benefit-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        /* Right Side - Register Form */
+        .register-section {
+            width: 500px;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 60px;
+        }
+
+        .register-form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .form-header h2 {
+            color: #2c3e50;
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .form-header p {
+            color: #6c757d;
+            font-size: 16px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #495057;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 15px 18px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #28a745;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
+        }
+
+        .password-requirements {
+            font-size: 12px;
+            color: #6c757d;
+            margin-top: 5px;
+            line-height: 1.4;
+        }
+
+        .register-btn {
+            width: 100%;
+            padding: 16px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .register-btn:hover {
+            background: #218838;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+        }
+
+        .register-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .form-footer p {
+            color: #6c757d;
+            margin-bottom: 15px;
+        }
+
+        .form-footer a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .message {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .message.success {
+            background-color: #e8f5e8;
+            color: #27ae60;
+            border: 1px solid rgba(144, 238, 144, 0.3);
+        }
+
+        .message.error {
+            background-color: #ffe6e6;
+            color: #c62828;
+            border: 1px solid #ffcdd2;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .spinner {
+            border: 3px solid #e8f4f8;
+            border-top: 3px solid #4a90e2;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading p {
+            color: #5a6c7d;
+            font-size: 14px;
+        }
+
+        .input-error {
+            border-color: #c62828 !important;
+            box-shadow: 0 0 0 3px rgba(198, 40, 40, 0.1) !important;
+        }
+
+        .error-text {
+            color: #c62828;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .register-container {
+                padding: 35px 25px;
+                margin: 10px;
+            }
+
+            .register-header h1 {
+                font-size: 24px;
+            }
+
+            .register-header .logo {
+                font-size: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-logo">
+            <span>🏠</span>
+            <span>AI Real Estate Advisor</span>
+        </div>
+        <nav class="header-nav">
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/login">Login</a>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Left Side - Info Section -->
+        <div class="info-section">
+            <div class="info-content">
+                <h1>Join Our Platform</h1>
+                <p>Start your journey with AI-powered real estate investment insights</p>
+                
+                <div class="benefits-list">
+                    <div class="benefit-item">
+                        <div class="benefit-icon">🤖</div>
+                        <span>AI-powered market analysis and investment recommendations</span>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">📊</div>
+                        <span>Real-time property data and market trends</span>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">💰</div>
+                        <span>Personalized investment strategies based on your goals</span>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">🔒</div>
+                        <span>Secure platform with advanced data protection</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side - Register Form -->
+        <div class="register-section">
+            <div class="register-form">
+                <div class="form-header">
+                    <h2>Create Account</h2>
+                    <p>Join thousands of successful real estate investors</p>
+                </div>
+
+                <div id="message" class="message" style="display: none;"></div>
+
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label for="username">Username *</label>
+                        <input type="text" id="username" name="username" required>
+                        <div id="usernameError" class="error-text" style="display: none;"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" required>
+                        <div id="emailError" class="error-text" style="display: none;"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password *</label>
+                        <input type="password" id="password" name="password" required>
+                        <div class="password-requirements">
+                            Password must be at least 6 characters long and contain letters and numbers
+                        </div>
+                        <div id="passwordError" class="error-text" style="display: none;"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirm_password">Confirm Password *</label>
+                        <input type="password" id="confirm_password" name="confirm_password" required>
+                        <div id="confirm_passwordError" class="error-text" style="display: none;"></div>
+                    </div>
+
+                    <button type="submit" class="register-btn" id="registerBtn">
+                        Create Account
+                    </button>
+                </form>
+
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p>Creating your account...</p>
+                </div>
+
+                <div class="login-link">
+                    <p>Already have an account? <a href="/login">Sign in here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Form validation functions
+        function validateUsername(username) {
+            if (username.length < 3) {
+                return 'Username must be at least 3 characters long';
+            }
+            if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+                return 'Username can only contain letters, numbers, and underscores';
+            }
+            return null;
+        }
+
+        function validateEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                return 'Please enter a valid email address';
+            }
+            return null;
+        }
+
+        function validatePassword(password) {
+            if (password.length < 6) {
+                return 'Password must be at least 6 characters long';
+            }
+            if (!/(?=.*[a-zA-Z])(?=.*\d)/.test(password)) {
+                return 'Password must contain both letters and numbers';
+            }
+            return null;
+        }
+
+        function validateConfirmPassword(password, confirmPassword) {
+            if (password !== confirmPassword) {
+                return 'Passwords do not match';
+            }
+            return null;
+        }
+
+        function showError(fieldId, message) {
+            const field = document.getElementById(fieldId);
+            const errorDiv = document.getElementById(fieldId + 'Error');
+            
+            field.classList.add('input-error');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+
+        function clearError(fieldId) {
+            const field = document.getElementById(fieldId);
+            const errorDiv = document.getElementById(fieldId + 'Error');
+            
+            field.classList.remove('input-error');
+            errorDiv.style.display = 'none';
+        }
+
+        function clearAllErrors() {
+            ['username', 'email', 'password', 'confirm_password'].forEach(clearError);
+        }
+
+        // Real-time validation
+        document.getElementById('username').addEventListener('blur', function() {
+            const error = validateUsername(this.value);
+            if (error) {
+                showError('username', error);
+            } else {
+                clearError('username');
+            }
+        });
+
+        document.getElementById('email').addEventListener('blur', function() {
+            const error = validateEmail(this.value);
+            if (error) {
+                showError('email', error);
+            } else {
+                clearError('email');
+            }
+        });
+
+        document.getElementById('password').addEventListener('blur', function() {
+            const error = validatePassword(this.value);
+            if (error) {
+                showError('password', error);
+            } else {
+                clearError('password');
+            }
+        });
+
+        document.getElementById('confirm_password').addEventListener('blur', function() {
+            const password = document.getElementById('password').value;
+            const error = validateConfirmPassword(password, this.value);
+            if (error) {
+                showError('confirm_password', error);
+            } else {
+                clearError('confirm_password');
+            }
+        });
+
+        // Form submission
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            console.log('Form submission started');
+            
+            const registerBtn = document.getElementById('registerBtn');
+            const loading = document.getElementById('loading');
+            const message = document.getElementById('message');
+            
+            // Prevent multiple submissions
+            if (registerBtn.disabled) {
+                console.log('Form already being submitted, ignoring');
+                return;
+            }
+            
+            // Clear previous errors
+            clearAllErrors();
+            console.log('Errors cleared');
+            
+            // Collect form data
+            const formData = {
+                username: document.getElementById('username').value,
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value,
+                confirm_password: document.getElementById('confirm_password').value
+            };
+            
+            // Validate all fields
+            let hasErrors = false;
+            
+            const usernameError = validateUsername(formData.username);
+            if (usernameError) {
+                showError('username', usernameError);
+                hasErrors = true;
+            }
+            
+            const emailError = validateEmail(formData.email);
+            if (emailError) {
+                showError('email', emailError);
+                hasErrors = true;
+            }
+            
+            const passwordError = validatePassword(formData.password);
+            if (passwordError) {
+                showError('password', passwordError);
+                hasErrors = true;
+            }
+            
+            const confirmPasswordError = validateConfirmPassword(formData.password, formData.confirm_password);
+            if (confirmPasswordError) {
+                showError('confirm_password', confirmPasswordError);
+                hasErrors = true;
+            }
+            
+            if (hasErrors) {
+                console.log('Validation errors found, stopping submission');
+                return;
+            }
+            
+            console.log('All validations passed, proceeding with submission');
+            
+            // Reset state
+            loading.style.display = 'block';
+            message.style.display = 'none';
+            registerBtn.disabled = true;
+            
+            console.log('Sending request to server...');
+            
+            try {
+                const response = await fetch('/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        username: formData.username,
+                        email: formData.email,
+                        password: formData.password
+                    })
+                });
+                
+                console.log('Response received:', response.status);
+                
+                const data = await response.json();
+                console.log('Response data:', data);
+                
+                if (data.success) {
+                    console.log('Registration successful');
+                    message.className = 'message success';
+                    message.textContent = 'Account created successfully! Redirecting to login...';
+                    message.style.display = 'block';
+                    
+                    setTimeout(() => {
+                        window.location.href = '/login';
+                    }, 2000);
+                } else {
+                    console.log('Registration failed:', data.message);
+                    throw new Error(data.message || 'Registration failed');
+                }
+                
+            } catch (err) {
+                console.log('Error occurred:', err.message);
+                message.className = 'message error';
+                message.textContent = err.message;
+                message.style.display = 'block';
+            } finally {
+                console.log('Request completed');
+                loading.style.display = 'none';
+                registerBtn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
