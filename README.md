@@ -1,11 +1,5 @@
 # Advanced Deep Reinforcement Learning for Real Estate Investment
 
-## Team members for Coding
-
-- **Zhihong Wu** ( Data Processing, MDP Modeling, Algorithm tuning )
-- **Yulong Huang** ( Data Processing, MDP Modeling, Algorithm implementation )
-- **Kairui Zhang** ( Data Processing, MDP Modeling, Software Development )
-
 ## Project Overview
 This project demonstrates a complete Deep Reinforcement Learning (DRL) research pipeline applying **Proximal Policy Optimization (PPO)** algorithm to real estate investment decision-making.
 
@@ -104,3 +98,9 @@ A-Reinforcement-Learning-Based-Real-EstateInvestment-Recommender-Using-ProximalP
 - **PPO Implementation**: Clipped surrogate objective with Actor-Critic architecture
 - **Risk Management**: Sophisticated reward engineering with penalty mechanisms
 - **Real-time Integration**: Seamless DRL model deployment in web environment
+
+## Team Members for Coding
+
+- **Zhihong Wu** ( Data Processing, MDP Modeling, Algorithm tuning )
+- **Yulong Huang** ( Data Processing, MDP Modeling, Algorithm implementation )
+- **Kairui Zhang** ( Data Processing, MDP Modeling, Software Development )
